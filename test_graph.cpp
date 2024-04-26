@@ -1,3 +1,9 @@
+//
+//  test_graph_example.cpp
+//  CS 271 Graph Project: Example Test File
+//
+//  Created by Dr. Stacey Truex
+//
 
 #include <fstream>
 #include <sstream>
@@ -41,17 +47,27 @@ void test_get(Graph<string, string> *G)
 {
     try
     {
+        {
         cout << "10" << endl;
         if (G->get("S") == nullptr || G->get("S")->data != "S data")
         {
             cout << "Incorrect result getting vertex \"s\"" << endl;
         }
         cout << "12" << endl;
+        }
+        {
         if (G->get("a") != nullptr)
         {
             cout << "Incorrect result getting non-existant vertex \"a\"" << endl;
         }
         cout << "13" << endl;
+        }
+        {
+        if(G->get("Y")->key != "Y")
+        {
+            cout << "Incorrect result getting vertex \"Y\"" << endl;
+        }
+        }
     }
     catch (exception &e)
     {
@@ -63,21 +79,33 @@ void test_reachable(Graph<string, string> *G)
 {
     try
     {
+        {
         if (!G->reachable("R", "V"))
         {
             cout << "Incorrectly identified adjacent vertex \"V\" as unreachable from \"R\"" << endl;
         }
         cout << 30 << endl;
+        }
+        {
         if (!G->reachable("X", "W"))
         {
             cout << "Incorrectly identified \"W\" as unreachable from \"X\"" << endl;
         }
         cout << 30 << endl;
+        }
+        {
         if (G->reachable("S", "A"))
         {
             cout << "Incorrectly identified non-existant vetex \"A\" as reachable from \"S\"" << endl;
         }
         cout << 30 << endl;
+        }
+        {
+        if(G->reachable("a", "b"))
+        {
+            cout << "Incorrectly identified non-existant vetex \"b\" as reachable from \"a\"" << endl;
+        }
+        }
     }
     catch (exception &e)
     {
@@ -110,6 +138,7 @@ void test_print_path(Graph<string, string> *G)
 {
     try
     {
+        {
         stringstream buffer;
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
         G->print_path("T", "V");
@@ -117,6 +146,37 @@ void test_print_path(Graph<string, string> *G)
         if (buffer.str() != "T -> S -> R -> V")
         {
             cout << "Incorrect path from vertex \"T\" to vertex \"V\". Expected: T -> S -> R -> V but got : " << buffer.str() << endl;
+        }
+        }
+        {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->print_path("Y", "Y");
+        cout.rdbuf(prevbuf);
+        if(buffer.str() != "Y")
+        {
+            cout << "Incorrect path from vertex \"Y\" to vertex \"Y\". Expected: Y but got : " << buffer.str() << endl;
+        }
+        }
+        {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->print_path("Y", "R");
+        cout.rdbuf(prevbuf);
+        if(buffer.str() != "")
+        {
+            cout << "Incorrect path from vertex \"Y\" to vertex \"R\". Expected: emptry string but got : " << buffer.str() << endl;
+        }
+        }
+        {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->print_path("a", "b");
+        cout.rdbuf(prevbuf);
+        if(buffer.str() != "")
+        {
+            cout << "Incorrect path from vertex \"a\" to vertex \"b\". Expected: emptry string but got : " << buffer.str() << endl;
+        }
         }
     }
     catch (exception &e)
@@ -165,6 +225,7 @@ void test_bfs_tree(Graph<string, string> *G)
 {
     try
     {
+        {
         stringstream buffer;
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
         G->bfs_tree("T");
@@ -173,6 +234,29 @@ void test_bfs_tree(Graph<string, string> *G)
         {
             cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
                  << buffer.str() << endl;
+        }
+        }
+        {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->bfs_tree("V");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "V\nS\nR")
+        {
+            cout << "Incorrect bfs tree. Expected : \nV\nS\nR \nbut got :\n"
+                 << buffer.str() << endl;
+        }
+        }
+        {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->bfs_tree("Z");
+        cout.rdbuf(prevbuf);
+        if(buffer.str() != "")
+        {
+            cout << "Incorrect bfs tree. Expected : Emptry string \nbut got :\n"
+                 << buffer.str() << endl;
+        }
         }
     }
     catch (exception &e)

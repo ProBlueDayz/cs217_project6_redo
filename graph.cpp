@@ -1,3 +1,9 @@
+//=================================
+// Charlie Horner and John Yoon
+// graph.h
+// Apr 2024
+// This file implements the templated graph class
+//=================================
 
 #include "graph.h"
 #include <sstream>
@@ -255,26 +261,24 @@ template <class D, class K>
 void            Graph<D, K>::bfs_tree(K source)
 {
     bfs(source);
-    int height = 0;
     vector<vector<K>> temp;
     stringstream ss;
     for(Node *u : V) {
         if(u && u->colorbfs) { // Adds check if u is not null and have been discovered
             if(u->distance >= temp.size()) {
                 temp.resize(u->distance + 1);
-                height++;
             }
             temp[u->distance].push_back(u->key);
         }
     }
-    for(vector<K> tem : temp) {
-        for(long unsigned int i = 0; i < tem.size(); i++){
-            ss << tem[i];
-            if(i != tem.size()- 1){
+    for(int j = 0; j < temp.size(); j++) {
+        for(long unsigned int i = 0; i < temp[j].size(); i++){
+            ss << temp[j][i];
+            if(i != temp[j].size()- 1){
                 ss << " ";
             }
         }
-        if(tem != temp[height+1]){
+        if(j != (temp.size()-1)){
             ss << "\n";
         }
     }

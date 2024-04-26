@@ -1,3 +1,9 @@
+//=================================
+// Charlie Horner and John Yoon
+// graph.h
+// Apr 2024
+// This file contains the class header for the templated graph class
+//=================================
 
 #ifndef GRAPH_H
 #define GRAPH_H_H
@@ -48,3 +54,4 @@ class Graph{
 // #include "graph.cpp"
 
 #endif
+
