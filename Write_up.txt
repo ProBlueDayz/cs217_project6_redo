@@ -1,1 +1,3 @@
-There was not a lot changed from the previous project to this one. The main focus was fixing bugs that came up during testing. More defensive logic was put around the edge_case method to help with 
+There was not a lot changed from the previous project to this one. The main focus was fixing bugs that came up during testing.
+More defensive logic was put around the edge_case method to help with segmentation faulting when there was no edge or the vertices were not in the graph. Reachable was used to accomplish this.
+Rewrote the bfs_tree to be a modified version of bfs that would print as it goes through bfs. This both fixed the formating errors when it printed and saved on time by removing extra iterations.
