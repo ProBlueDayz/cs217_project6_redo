@@ -1,9 +1,4 @@
-//
-//  test_graph_example.cpp
-//  CS 271 Graph Project: Example Test File
-//
-//  Created by Dr. Stacey Truex
-//
+//  test graph
 
 #include <fstream>
 #include <sstream>
@@ -282,7 +277,6 @@ int main()
     test_edge_class(G);
     cout << "f6" << endl;
     test_bfs_tree(G);
-    cout << "f7" << endl;
 
     cout << "Testing completed" << endl;
 

@@ -32,6 +32,7 @@ Graph<D, K>::Graph(vector<K> keys, vector<D> data, vector<vector<K>> edges){
         V[i]->place = i;
 
     }
+    cout << V.size() << " <- size";
     this->dfs();
 }
 
@@ -219,30 +220,32 @@ template <class D, class K>
 string          Graph<D, K>::edge_class(K u, K v)
 
 {
-    Node* uNode = this->get(u);
-    Node* vNode = this->get(v);
-    for( K key : E[uNode->place]){
-        if(key == v){
-    
-    if(vNode->dpi == uNode){
-        return "tree edge";
-    }
-    while(vNode->dpi != nullptr){
+    if(this->reachable(u, v)){
+        Node* uNode = this->get(u);
+        Node* vNode = this->get(v);
+        for( K key : E[uNode->place]){
+            if(key == v){
+                
         if(vNode->dpi == uNode){
-            return "forward edge";
+            return "tree edge";
         }
-        vNode = vNode->dpi;
-    }
-
-    while(uNode->dpi != nullptr){
-        if(uNode->dpi == vNode){
-            return "back edge";
+        while(vNode->dpi != nullptr){
+            if(vNode->dpi == uNode){
+                return "forward edge";
+            }
+            vNode = vNode->dpi;
         }
-        uNode = uNode->dpi;
-    }
 
-    return "cross edge";
+        while(uNode->dpi != nullptr){
+            if(uNode->dpi == vNode){
+                return "back edge";
+            }
+            uNode = uNode->dpi;
+        }
 
+        return "cross edge";
+
+            }
         }
     }
     return "no edge";
@@ -260,26 +263,44 @@ string          Graph<D, K>::edge_class(K u, K v)
 template <class D, class K>
 void            Graph<D, K>::bfs_tree(K source)
 {
-    bfs(source);
-    vector<vector<K>> temp;
     stringstream ss;
-    for(Node *u : V) {
-        if(u && u->colorbfs) { // Adds check if u is not null and have been discovered
-            if(u->distance >= temp.size()) {
-                temp.resize(u->distance + 1);
-            }
-            temp[u->distance].push_back(u->key);
+    int time = 0;
+    Node* Q[V.size()+1];
+    int head = 0, tail = 0;
+    for (Node* x : V){
+        if(x->key == source){
+            x-> distance = time;
+            x->colorbfs = 1;
+            Q[tail] = x;
+            tail++;
         }
+        else{
+            x-> distance = -1;
+            x->colorbfs = 0;
+        }
+        x-> pi = nullptr;
     }
-    for(int j = 0; j < temp.size(); j++) {
-        for(long unsigned int i = 0; i < temp[j].size(); i++){
-            ss << temp[j][i];
-            if(i != temp[j].size()- 1){
-                ss << " ";
-            }
-        }
-        if(j != (temp.size()-1)){
+    int currentline = 0;
+    while(tail != head){
+        Node* current = Q[head];
+        if(current->distance > currentline){
+            currentline = current->distance;
             ss << "\n";
+        }
+        else if( currentline > 0){
+            ss << " ";
+        }
+        ss << current->key;
+        head++;
+        for(K edge : E[current->place]){
+            Node* edgep = this->get(edge);
+            if(edgep->distance == -1){
+                edgep->pi = current;
+                edgep->colorbfs = 1;
+                edgep->distance = current->distance + 1;
+                Q[tail] = edgep;
+                tail++;
+            }
         }
     }
     cout << ss.str();
