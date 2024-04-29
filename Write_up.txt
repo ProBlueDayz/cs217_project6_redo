@@ -1,0 +1,1 @@
+There was not a lot changed from the previous project to this one. The main focus was fixing bugs that came up during testing. More defensive logic was put around the edge_case method to help with 
